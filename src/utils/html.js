@@ -1,8 +1,8 @@
 export const getBadge = status => {
   switch (status) {
-    case "Active":
+    case 1:
       return "success";
-    case "Inactive":
+    case 0:
       return "secondary";
     case "Pending":
       return "warning";

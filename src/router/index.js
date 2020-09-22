@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import userRouter from "./modules/user";
+import roleRouter from "./modules/role";
 // Containers
 const TheContainer = () => import("@/components/container");
 
@@ -31,7 +32,8 @@ function configRoutes() {
           name: "Dashboard",
           component: Home
         },
-        userRouter
+        userRouter,
+        roleRouter,
       ]
     },
     {

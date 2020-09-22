@@ -27,6 +27,7 @@ export default {
     return {
       user: {
         id: "",
+        role_id: null,
         fullname: "",
         username: "",
         status: "",
@@ -35,19 +36,19 @@ export default {
     };
   },
   mounted() {
-    let id = this.$route.params.id;
-    this.$api(`users/${id}`).then(({ data: { data } }) => {
-      this.user.fullname = data.fullname;
-      this.user.username = data.username;
-      this.user.status = data.status;
-      this.user.age = data.age;
-      this.user.id = data.id;
-    });
+    this.load();
   },
   methods: {
+    load(){
+      let id = this.$route.params.id;
+      this.$api(`users/${id}`).then(({ data: { data } }) => {
+        this.user = data;
+      });
+    },
     updateUser() {
       this.$api.put(`users/${this.user.id}`, { ...this.user }).then(res => {
-        console.log(res);
+        this.user = res.data.data;
+        this.$router.push({ name: "UserIndex" });
       });
     }
   }

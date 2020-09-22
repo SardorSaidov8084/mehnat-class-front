@@ -1,12 +1,20 @@
 <template>
   <CContainer class="c-app flex-column" :fluid="true">
     <CCard>
-      <router-link :to="{ name: 'UserCreate' }">
-        <CButton color="primary float-right" class="m-3">
-          <CIcon name="cil-user-plus" /> Yangi Foydalanuvchi yaratish
-        </CButton>
-      </router-link>
-      <h4 class="text-center">Foydalanuvchilar ro'yhati</h4>
+        <CCardHeader>
+            <CRow>
+                <CCol sm="9">
+                    <h4>Foydalanuvchilar ro'yxati</h4>
+                </CCol>
+                <CCol sm="3">
+                    <router-link :to="{ name: 'UserCreate' }">
+                        <CButton color="primary float-right" >
+                            <CIcon name="cil-user-plus" /> Add
+                        </CButton>
+                    </router-link>
+                </CCol>
+            </CRow>
+        </CCardHeader>
       <CCardBody>
         <CDataTable
           :items="items"
@@ -19,6 +27,11 @@
           sorter
           pagination
         >
+          <template #role="{item}">
+            <td>
+                {{ item.role ? item.role.name : '' }}
+            </td>
+          </template>
           <template #status="{item}">
             <td>
               <CBadge :color="getBadge(item.status)">
@@ -50,32 +63,32 @@ import { users as usersData } from "@/data/";
 import { getBadge } from "@/utils/html";
 
 export default {
-  name: "Users",
-  data() {
-    return {
-      items: [],
-      fields: usersData.fields,
-      details: [],
-      collapseDuration: 0
-    };
-  },
-  mounted() {
-    this.$api("users").then(res => {
-      this.items = res.data;
-    });
-  },
-  methods: {
-    getBadge,
-    toggleDetails(item) {
-      this.$set(this.items[item.id], "_toggled", !item._toggled);
-      this.collapseDuration = 300;
-      this.$nextTick(() => {
-        this.collapseDuration = 0;
-      });
-    },
-    updateUser(id) {
-      this.$router.push({ name: "UserEdit", params: { id } });
-    }
-  }
+	name: "Users",
+	data() {
+		return {
+		items: [],
+		fields: usersData.fields,
+		details: [],
+		collapseDuration: 0
+		};
+	},
+	mounted() {
+		this.$api("users").then(res => {
+		this.items = res.data.data;
+		});
+	},
+	methods: {
+		getBadge,
+		toggleDetails(item) {
+			this.$set(this.items[item.id], "_toggled", !item._toggled);
+			this.collapseDuration = 300;
+			this.$nextTick(() => {
+				this.collapseDuration = 0;
+			});
+		},
+		updateUser(id) {
+			this.$router.push({ name: "UserEdit", params: { id } });
+		}
+	}
 };
 </script>
